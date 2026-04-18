@@ -16,8 +16,7 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
-COPY --from=frontend-build /build/client/../public ./public
-RUN npm run build
+RUN npm run build:backend
 
 # ─── Stage 3: Production runtime ────────────────────────────────────────────
 FROM node:20-alpine AS production
