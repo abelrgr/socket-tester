@@ -2,6 +2,8 @@ name: Build and Deploy Docker Image
 permissions:
   contents: read
   packages: write
+  attestations: write
+  id-token: write
 
 on:
   push:
@@ -20,6 +22,8 @@ jobs:
     permissions:
       contents: read
       packages: write
+      attestations: write
+      id-token: write
     outputs:
       image-version: ${{ steps.meta.outputs.version }}
 
