@@ -3,7 +3,7 @@ FROM node:20-alpine AS frontend-build
 WORKDIR /build/client
 
 COPY client/package*.json ./
-RUN npm ci --omit=dev=false
+RUN npm install
 
 COPY client/ ./
 RUN npm run build
@@ -13,7 +13,7 @@ FROM node:20-alpine AS backend-build
 WORKDIR /build/backend
 
 COPY package*.json ./
-RUN npm ci --omit=dev=false
+RUN npm install
 
 COPY . .
 COPY --from=frontend-build /build/client/../public ./public
@@ -29,7 +29,7 @@ WORKDIR /app
 
 # Copy only production deps
 COPY package*.json ./
-RUN npm ci --omit=dev && npm cache clean --force
+RUN npm install --omit=dev && npm cache clean --force
 
 # Copy compiled backend
 COPY --from=backend-build /build/backend/dist ./dist
