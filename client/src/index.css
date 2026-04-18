@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---- Theme: dark (default) ---- */
+:root,
+html[data-theme="dark"] {
+  --color-brand: #6366f1;
+  --color-brand-dark: #4f46e5;
+  --color-brand-light: #818cf8;
+  --color-surface-primary: #0f1117;
+  --color-surface-secondary: #1a1d27;
+  --color-surface-elevated: #252836;
+  --color-surface-border: #2d3148;
+  /* Text on brand button: black has 4.7:1 vs #6366f1 (white only 4.47:1 — fails AA) */
+  --color-on-brand: #000000;
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+  /* #8896a8 = ~5.7:1 on darkest surface #0f1117 */
+  --color-text-muted: #8896a8;
+}
+
+/* ---- Theme: light ---- */
+html[data-theme="light"] {
+  --color-brand: #4f46e5;
+  --color-brand-dark: #3730a3;
+  --color-brand-light: #6366f1;
+  --color-surface-primary: #f8fafc;
+  --color-surface-secondary: #ffffff;
+  --color-surface-elevated: #f1f5f9;
+  --color-surface-border: #e2e8f0;
+  /* White on #4f46e5: 6.29:1 ✅ */
+  --color-on-brand: #ffffff;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #64748b;
+}
+
+/* ---- Theme: dracula ---- */
+html[data-theme="dracula"] {
+  --color-brand: #bd93f9;
+  --color-brand-dark: #9a73e7;
+  --color-brand-light: #cda8fb;
+  --color-surface-primary: #282a36;
+  --color-surface-secondary: #1e1f2b;
+  --color-surface-elevated: #44475a;
+  --color-surface-border: #6272a4;
+  /* Black on #bd93f9: 8.71:1 ✅ (white only 2.41:1 — critical fail) */
+  --color-on-brand: #000000;
+  --color-text-primary: #f8f8f2;
+  --color-text-secondary: #a8b2d8;
+  --color-text-muted: #8892b0;
+}
+
+/* ---- Theme: high-contrast ---- */
+html[data-theme="high-contrast"] {
+  --color-brand: #ffff00;
+  --color-brand-dark: #e0e000;
+  --color-brand-light: #ffff66;
+  --color-surface-primary: #000000;
+  --color-surface-secondary: #0a0a0a;
+  --color-surface-elevated: #1a1a1a;
+  --color-surface-border: #444444;
+  /* Black on #ffff00: 19.56:1 ✅ (white only 1.07:1 — critical fail) */
+  --color-on-brand: #000000;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #e5e5e5;
+  --color-text-muted: #cccccc;
+}
+
+/* ---- Theme: solarized ---- */
+html[data-theme="solarized"] {
+  --color-brand: #268bd2;
+  --color-brand-dark: #1a6da8;
+  --color-brand-light: #4ca8e0;
+  --color-surface-primary: #002b36;
+  --color-surface-secondary: #073642;
+  --color-surface-elevated: #0d4a5a;
+  --color-surface-border: #586e75;
+  /* Black on #268bd2: 5.71:1 ✅ (white only 3.68:1 — fails AA) */
+  --color-on-brand: #000000;
+  --color-text-primary: #eee8d5;
+  --color-text-secondary: #93a1a1;
+  --color-text-muted: #8fa5a5;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-surface-secondary);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-brand-dark);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-brand);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 bg-brand rounded-lg font-medium hover:bg-brand-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+    color: var(--color-on-brand);
+  }
+
+  .btn-secondary {
+    @apply px-4 py-2 bg-surface-elevated rounded-lg font-medium hover:bg-surface-border transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+    color: var(--color-text-primary);
+  }
+
+  .btn-danger {
+    @apply px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .input-field {
+    @apply w-full px-3 py-2 bg-surface-secondary border border-surface-border rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-colors;
+    color: var(--color-text-primary);
+  }
+  .input-field::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .label {
+    @apply block text-sm font-medium mb-1;
+    color: var(--color-text-secondary);
+  }
+
+  .status-chip {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium;
+  }
+}
+
+@layer utilities {
+  .animate-pulse-ring {
+    animation: pulse-ring 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse-ring {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+}
