@@ -8,6 +8,7 @@ client/build
 
 # Logs
 logs
+!client/src/components/logs
 *.log
 npm-debug.log*
 pnpm-debug.log*
