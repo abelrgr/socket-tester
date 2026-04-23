@@ -26,9 +26,9 @@ async function bootstrap() {
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", 'https://umami.abelgalloruiz.me'],
         styleSrc: ["'self'", "'unsafe-inline'"],
-        connectSrc: ["'self'", 'ws:', 'wss:'],
+        connectSrc: ["'self'", 'ws:', 'wss:', 'https://umami.abelgalloruiz.me'],
         imgSrc: ["'self'", 'data:'],
       },
     },
