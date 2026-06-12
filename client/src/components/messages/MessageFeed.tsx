@@ -32,6 +32,30 @@ function highlight(text: string, search: string): JSX.Element {
   );
 }
 
+const MSG_CAP = 1000;
+const PREVIEW_CAP = 500;
+
+function CapBanner({ count, copy = 'Showing latest 1000 messages — older entries dropped' }: { count: number; copy?: string }) {
+  return (
+    <div className="flex items-center gap-2 px-4 py-2 bg-yellow-500/10 border-b border-yellow-500/20 text-xs" role="status" aria-live="polite">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-yellow-500">
+        <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>
+        <path d="M12 9v4M12 17h.01"/>
+      </svg>
+      <span className="text-yellow-500">{copy}</span>
+      <span className="ml-auto text-yellow-500/70 tabular-nums">{count.toLocaleString()} / {MSG_CAP.toLocaleString()}</span>
+    </div>
+  );
+}
+
+function TruncMarker() {
+  return (
+    <span className="ml-1 text-xs italic [color:var(--color-text-muted)] border-b border-dotted border-[var(--color-text-muted)]" title={`Preview limited to ${PREVIEW_CAP} characters`}>
+      … (truncated)
+    </span>
+  );
+}
+
 function MessageBubble({ message, search }: { message: Message; search: string }) {
   const isSystem = message.direction === 'system';
   const isSent = message.direction === 'sent';
@@ -74,6 +98,7 @@ function MessageBubble({ message, search }: { message: Message; search: string }
           {expanded && (
             <pre className="text-xs font-mono whitespace-pre-wrap break-words overflow-x-auto">
               {isJson ? highlight(formatted, search) : highlight(message.payload, search)}
+              {message.truncated && <TruncMarker />}
             </pre>
           )}
         </div>
@@ -304,6 +329,9 @@ export function MessageFeed() {
         aria-atomic="false"
         aria-relevant="additions"
       >
+        {connectionMessageCount >= MSG_CAP && (
+          <CapBanner count={Math.min(connectionMessageCount, MSG_CAP)} />
+        )}
         {filteredMessages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full [color:var(--color-text-muted)]">
             <span className="text-3xl mb-2">💬</span>

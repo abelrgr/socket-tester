@@ -1,17 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import api from '../../services/api';
 import { useNotificationStore } from '../../stores/notificationStore';
-
-const API_BASE = import.meta.env.DEV ? 'http://localhost:3000' : '';
 
 interface NetworkCondition {
   delayMs: number;
   jitterMs: number;
   packetLossRate: number;
-  maxBytesPerSec: number;
   disconnectAfterMs: number;
-  flapping: boolean;
-  flappingIntervalMs: number;
   active: boolean;
 }
 
@@ -19,10 +14,7 @@ const DEFAULT: NetworkCondition = {
   delayMs: 0,
   jitterMs: 0,
   packetLossRate: 0,
-  maxBytesPerSec: 0,
   disconnectAfterMs: 0,
-  flapping: false,
-  flappingIntervalMs: 5000,
   active: false,
 };
 
@@ -30,10 +22,6 @@ const PRESETS: { label: string; values: Partial<NetworkCondition> }[] = [
   {
     label: 'Slow 3G',
     values: { delayMs: 200, jitterMs: 50, packetLossRate: 0.05 },
-  },
-  {
-    label: 'Flapping',
-    values: { flapping: true, flappingIntervalMs: 3000, disconnectAfterMs: 5000 },
   },
   {
     label: 'High Latency',
@@ -55,11 +43,10 @@ export function NetworkConditionsPanel({ connectionId }: Props) {
   const [form, setForm] = useState<NetworkCondition>(DEFAULT);
   const [saved, setSaved] = useState(false);
 
-  // Load existing conditions when connectionId changes
   useEffect(() => {
     if (!connectionId) return;
-    void axios
-      .get<NetworkCondition>(`${API_BASE}/api/connections/${connectionId}/network`)
+    void api
+      .get<NetworkCondition>(`/api/connections/${connectionId}/network`)
       .then((r) => setForm({ ...DEFAULT, ...r.data }))
       .catch(() => setForm(DEFAULT));
   }, [connectionId]);
@@ -67,8 +54,8 @@ export function NetworkConditionsPanel({ connectionId }: Props) {
   const apply = useCallback(async () => {
     if (!connectionId) return;
     try {
-      const resp = await axios.put<NetworkCondition>(
-        `${API_BASE}/api/connections/${connectionId}/network`,
+      const resp = await api.put<NetworkCondition>(
+        `/api/connections/${connectionId}/network`,
         form,
       );
       setForm(resp.data);
@@ -83,7 +70,7 @@ export function NetworkConditionsPanel({ connectionId }: Props) {
   const clear = useCallback(async () => {
     if (!connectionId) return;
     try {
-      await axios.delete(`${API_BASE}/api/connections/${connectionId}/network`);
+      await api.delete(`/api/connections/${connectionId}/network`);
       setForm(DEFAULT);
       addToast('Network conditions cleared', 'info');
     } catch {
@@ -101,7 +88,6 @@ export function NetworkConditionsPanel({ connectionId }: Props) {
 
   return (
     <div className="border-t border-surface-border">
-      {/* Accordion header */}
       <button
         className="w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-white/5 transition-colors"
         onClick={() => setExpanded((v) => !v)}
@@ -121,7 +107,6 @@ export function NetworkConditionsPanel({ connectionId }: Props) {
 
       {expanded && (
         <div className="px-4 pb-4 flex flex-col gap-3">
-          {/* Presets */}
           <div className="flex flex-wrap gap-1">
             {PRESETS.map((p) => (
               <button
@@ -134,13 +119,11 @@ export function NetworkConditionsPanel({ connectionId }: Props) {
             ))}
           </div>
 
-          {/* Controls */}
           <div className="grid grid-cols-2 gap-2 text-xs">
             {[
               { label: 'Delay (ms)', key: 'delayMs', min: 0, max: 10000 },
               { label: 'Jitter (ms)', key: 'jitterMs', min: 0, max: 5000 },
               { label: 'Disconnect after (ms, 0=off)', key: 'disconnectAfterMs', min: 0, max: 300000 },
-              { label: 'Flap interval (ms)', key: 'flappingIntervalMs', min: 500, max: 60000 },
             ].map(({ label, key, min, max }) => (
               <label key={key} className="flex flex-col gap-0.5">
                 <span className="text-gray-500">{label}</span>
@@ -158,7 +141,6 @@ export function NetworkConditionsPanel({ connectionId }: Props) {
             ))}
           </div>
 
-          {/* Packet loss slider */}
           <label className="flex flex-col gap-1 text-xs">
             <div className="flex justify-between text-gray-500">
               <span>Packet loss rate</span>
@@ -176,18 +158,6 @@ export function NetworkConditionsPanel({ connectionId }: Props) {
             />
           </label>
 
-          {/* Flapping toggle */}
-          <label className="flex items-center gap-2 text-xs cursor-pointer">
-            <input
-              type="checkbox"
-              checked={form.flapping}
-              onChange={(e) => setForm((f) => ({ ...f, flapping: e.target.checked }))}
-              className="accent-yellow-400"
-            />
-            <span className="text-gray-400">Enable connection flapping</span>
-          </label>
-
-          {/* Action buttons */}
           <div className="flex gap-2">
             <button
               onClick={() => void apply()}

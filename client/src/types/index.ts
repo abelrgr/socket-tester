@@ -20,6 +20,8 @@ export interface Message {
   timestamp: string;
   size: number;
   latency?: number | null;
+  /** Whether the payload preview was truncated by the backend (500 char limit) */
+  truncated?: boolean;
   /** Protocol-specific extras */
   eventName?: string;   // Socket.io
   topic?: string;       // MQTT

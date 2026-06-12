@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { ActiveConnection, ConnectionStatus, Protocol } from '../types';
+import { PROTOCOL_COLORS } from '../constants/protocolColors';
 
 export interface ConnectionTab {
   id: string;
@@ -8,13 +9,6 @@ export interface ConnectionTab {
   color: string;
   connection: ActiveConnection | null;
 }
-
-const PROTOCOL_COLORS: Record<Protocol, string> = {
-  websocket: '#3b82f6',
-  socketio: '#7c3aed',
-  mqtt: '#f59e0b',
-  amqp: '#10b981',
-};
 
 function createTab(protocol: Protocol = 'websocket'): ConnectionTab {
   return {

@@ -18,6 +18,17 @@ html[data-theme="dark"] {
   --color-text-secondary: #94a3b8;
   /* #8896a8 = ~5.7:1 on darkest surface #0f1117 */
   --color-text-muted: #8896a8;
+
+  /* Chart tokens */
+  --chart-series-1: #6366f1;
+  --chart-series-2: #10b981;
+  --chart-accent: #818cf8;
+  --chart-danger: #ef4444;
+  --chart-grid: #2d3148;
+  --chart-axis: #8896a8;
+  --chart-tooltip-bg: #252836;
+  --chart-tooltip-border: #2d3148;
+  --chart-tooltip-text: #f1f5f9;
 }
 
 /* ---- Theme: light ---- */
@@ -34,6 +45,17 @@ html[data-theme="light"] {
   --color-text-primary: #0f172a;
   --color-text-secondary: #475569;
   --color-text-muted: #64748b;
+
+  /* Chart tokens */
+  --chart-series-1: #4f46e5;
+  --chart-series-2: #059669;
+  --chart-accent: #6366f1;
+  --chart-danger: #dc2626;
+  --chart-grid: #e2e8f0;
+  --chart-axis: #64748b;
+  --chart-tooltip-bg: #f1f5f9;
+  --chart-tooltip-border: #e2e8f0;
+  --chart-tooltip-text: #0f172a;
 }
 
 /* ---- Theme: dracula ---- */
@@ -50,6 +72,17 @@ html[data-theme="dracula"] {
   --color-text-primary: #f8f8f2;
   --color-text-secondary: #a8b2d8;
   --color-text-muted: #8892b0;
+
+  /* Chart tokens */
+  --chart-series-1: #bd93f9;
+  --chart-series-2: #50fa7b;
+  --chart-accent: #cda8fb;
+  --chart-danger: #ff5555;
+  --chart-grid: #6272a4;
+  --chart-axis: #8892b0;
+  --chart-tooltip-bg: #44475a;
+  --chart-tooltip-border: #6272a4;
+  --chart-tooltip-text: #f8f8f2;
 }
 
 /* ---- Theme: high-contrast ---- */
@@ -66,6 +99,17 @@ html[data-theme="high-contrast"] {
   --color-text-primary: #ffffff;
   --color-text-secondary: #e5e5e5;
   --color-text-muted: #cccccc;
+
+  /* Chart tokens - brand-adapted high-contrast palette */
+  --chart-series-1: #ffff00;
+  --chart-series-2: #00ff88;
+  --chart-accent: #00ffff;
+  --chart-danger: #ff4444;
+  --chart-grid: #444444;
+  --chart-axis: #cccccc;
+  --chart-tooltip-bg: #1a1a1a;
+  --chart-tooltip-border: #444444;
+  --chart-tooltip-text: #ffffff;
 }
 
 /* ---- Theme: solarized ---- */
@@ -82,6 +126,17 @@ html[data-theme="solarized"] {
   --color-text-primary: #eee8d5;
   --color-text-secondary: #93a1a1;
   --color-text-muted: #8fa5a5;
+
+  /* Chart tokens */
+  --chart-series-1: #268bd2;
+  --chart-series-2: #859900;
+  --chart-accent: #4ca8e0;
+  --chart-danger: #dc322f;
+  --chart-grid: #586e75;
+  --chart-axis: #8fa5a5;
+  --chart-tooltip-bg: #0d4a5a;
+  --chart-tooltip-border: #586e75;
+  --chart-tooltip-text: #eee8d5;
 }
 
 @layer base {
